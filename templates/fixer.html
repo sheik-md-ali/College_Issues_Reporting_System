@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fixer Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        section {
+            padding: 20px;
+            margin: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Modal Styling */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .progress-update-form {
+            margin-top: 20px;
+        }
+
+        .progress-update-form label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .progress-update-form input, .progress-update-form select, .progress-update-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+        }
+
+        .progress-update-form button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Fixer Dashboard</h1>
+        <nav>
+            <ul>
+                <li><a href="#">Dashboard</a></li>
+                <li><a href="#">Assigned Issues</a></li>
+                <li><a href="#">Profile</a></li>
+                <li><a href="#">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="assigned-issues">
+        <h2>Assigned Issues</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Issue ID</th>
+                    <th>Description</th>
+                    <th>Severity</th>
+                    <th>Location</th>
+                    <th>Status</th>
+                    <th>Update Progress</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>#001</td>
+                    <td>Broken Light in Classroom 101</td>
+                    <td>High</td>
+                    <td>Classroom 101</td>
+                    <td>In Progress</td>
+                    <td><button onclick="openModal('#001')">Update Status</button></td>
+                </tr>
+                <tr>
+                    <td>#002</td>
+                    <td>Leaking Pipe in Hostel Block B</td>
+                    <td>Medium</td>
+                    <td>Hostel Block B</td>
+                    <td>Pending</td>
+                    <td><button onclick="openModal('#002')">Update Status</button></td>
+                </tr>
+                <!-- Add more rows dynamically -->
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Modal for Update Progress -->
+    <div id="progress-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Update Issue Progress</h2>
+            <form class="progress-update-form" id="progressForm">
+                <label for="status">New Status:</label>
+                <select id="status" name="status">
+                    <option value="In Progress">In Progress</option>
+                    <option value="Resolved">Resolved</option>
+                </select>
+                <br><br>
+
+                <label for="progress">Progress Update:</label><br>
+                <textarea id="progress" name="progress" rows="4" placeholder="Describe the work done so far..."></textarea><br><br>
+
+                <label for="media">Attach Media (optional):</label><br>
+                <input type="file" id="media" name="media"><br><br>
+
+                <button type="submit">Submit Progress</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 College Issue Reporting System</p>
+    </footer>
+
+    <script>
+        // Modal handling for progress update
+        function openModal(issueId) {
+            document.getElementById("progress-modal").style.display = "block";
+            // You can populate the form with the issue data based on the issueId
+        }
+
+        function closeModal() {
+            document.getElementById("progress-modal").style.display = "none";
+        }
+
+        // Close modal when clicked outside of it
+        window.onclick = function(event) {
+            if (event.target == document.getElementById("progress-modal")) {
+                closeModal();
+            }
+        }
+
+        // Handle form submission (this part can be linked to backend API)
+        document.getElementById("progressForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const status = document.getElementById("status").value;
+            const progress = document.getElementById("progress").value;
+            const media = document.getElementById("media").files[0];
+
+            // Here, you can make an API call to update the status in the database
+
+            alert("Progress updated successfully!");
+            closeModal(); // Close modal after submission
+        });
+    </script>
+
+</body>
+</html>
