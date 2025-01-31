@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Issue Reporting System</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; padding: 20px; }
+        .container { width: 100%; max-width: 800px; margin: auto; }
+        .form-group { margin-bottom: 15px; }
+        label { font-weight: bold; }
+        input, select, textarea { width: 100%; padding: 10px; margin-top: 5px; }
+        button { padding: 10px 15px; background: blue; color: white; border: none; cursor: pointer; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background-color: #f4f4f4; }
+        .resolved { color: green; font-weight: bold; }
+        .pending { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Report an Issue</h2>
+        <form id="issueForm">
+            <div class="form-group">
+                <label>Issue Type:</label>
+                <select id="issueType">
+                    <option>Electrical</option>
+                    <option>Plumbing</option>
+                    <option>Wi-Fi</option>
+                    <option>Cleanliness</option>
+                    <option>Security</option>
+                    <option>Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Description:</label>
+                <textarea id="description" placeholder="Describe the issue..." required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Upload Media:</label>
+                <input type="file" id="media">
+            </div>
+
+            <div class="form-group">
+                <label>Severity:</label>
+                <select id="severity">
+                    <option>Low</option>
+                    <option>Medium</option>
+                    <option>High</option>
+                    <option>Critical</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Location:</label>
+                <input type="text" id="location" placeholder="Enter location" required>
+            </div>
+
+            <button type="submit">Submit Issue</button>
+        </form>
+
+        <h2>Track Your Issues</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Issue</th>
+                    <th>Status</th>
+                    <th>Resolution</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="issueTable">
+                <tr>
+                    <td>Broken Wi-Fi</td>
+                    <td class="pending">Pending</td>
+                    <td>Not Resolved</td>
+                    <td>
+                        <button onclick="editIssue()">Edit</button>
+                        <button onclick="deleteIssue()">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Feedback & Rating</h2>
+        <div class="form-group">
+            <label>Rate the Issue Resolution:</label>
+            <select id="rating">
+                <option>1 - Poor</option>
+                <option>2 - Fair</option>
+                <option>3 - Good</option>
+                <option>4 - Very Good</option>
+                <option>5 - Excellent</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Additional Feedback:</label>
+            <textarea id="feedback" placeholder="Your feedback..."></textarea>
+        </div>
+        <button onclick="submitFeedback()">Submit Feedback</button>
+    </div>
+
+    <script>
+        function editIssue() {
+            alert("Edit functionality will be implemented with backend integration.");
+        }
+
+        function deleteIssue() {
+            alert("Delete functionality will be implemented with backend integration.");
+        }
+
+        function submitFeedback() {
+            alert("Feedback submitted successfully!");
+        }
+    </script>
+
+</body>
+</html>
