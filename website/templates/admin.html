@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - College Issue Reporting</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f4f4f9;
+        }
+        .sidebar {
+            height: 100vh;
+            width: 250px;
+            position: fixed;
+            background-color: #212529;
+            padding-top: 20px;
+        }
+        .sidebar a {
+            padding: 12px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: block;
+            transition: 0.3s;
+        }
+        .sidebar a:hover {
+            background-color: #17a2b8;
+        }
+        .content {
+            margin-left: 260px;
+            padding: 20px;
+        }
+        .profile-card {
+            text-align: center;
+            padding: 20px;
+            background: #343a40;
+            color: white;
+            border-radius: 8px;
+            margin: 10px;
+        }
+        .profile-card img {
+            border-radius: 50%;
+            width: 90px;
+            height: 90px;
+            border: 3px solid white;
+            margin-bottom: 10px;
+        }
+        .modal-header {
+            background-color: #17a2b8;
+            color: white;
+        }
+        .card-header {
+            font-weight: bold;
+        }
+        .bg-primary {
+            background-color: #007bff !important;
+        }
+        .bg-info {
+            background-color: #17a2b8 !important;
+        }
+        .bg-secondary {
+            background-color: #6c757d !important;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h4 class="text-white text-center">Admin Panel</h4>
+        <div class="profile-card">
+            <img src="https://via.placeholder.com/90" alt="Admin">
+            <h5 class="mb-1">Admin Name</h5>
+            <p class="mb-1">admin@example.com</p>
+        </div>
+        <a href="#">Dashboard</a>
+        <a href="#">Reported Issues</a>
+        <a href="#">Assign Issues</a>
+        <a href="#">Manage Fixers</a>
+        <a href="#">Reports & Analytics</a>
+        <a href="#">Logout</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <h2 class="mb-3">Welcome, Admin</h2>
+
+        <!-- Reports & Analytics Section (Moved to Top) -->
+        <div class="card mb-4">
+            <div class="card-header bg-secondary text-white">
+                Reports & Analytics
+            </div>
+            <div class="card-body">
+                <p><b>Total Issues:</b> <span id="totalIssues">10</span></p>
+                <p><b>Resolved Issues:</b> <span id="resolvedIssues">6</span></p>
+                <p><b>Pending Issues:</b> <span id="pendingIssues">4</span></p>
+            </div>
+        </div>
+
+        <!-- Reported Issues Table -->
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                Reported Issues
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Issue Type</th>
+                            <th>Location</th>
+                            <th>Severity</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="issueTable">
+                        <tr>
+                            <td>1</td>
+                            <td>Wi-Fi Problem</td>
+                            <td>Library</td>
+                            <td><span class="badge bg-danger">High</span></td>
+                            <td><span class="badge bg-warning">Pending</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-primary" onclick="openAssignModal()">Assign</button>
+                                <button class="btn btn-sm btn-success">Resolve</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Add New Fixer Section -->
+        <div class="card mt-4">
+            <div class="card-header bg-info text-white">
+                Add New Fixer
+            </div>
+            <div class="card-body">
+                <form id="fixerForm">
+                    <div class="mb-3">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-control" placeholder="Enter fixer's name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" placeholder="Enter fixer's email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Specialization</label>
+                        <select class="form-control">
+                            <option>Electrical</option>
+                            <option>Plumbing</option>
+                            <option>IT Support</option>
+                            <option>Maintenance</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-success">Add Fixer</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Assign Issue Modal -->
+    <div class="modal fade" id="assignModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Assign Issue</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="assignForm">
+                        <div class="mb-3">
+                            <label class="form-label">Select Fixer</label>
+                            <select class="form-control">
+                                <option>John Doe - IT Support</option>
+                                <option>Jane Smith - Electrical</option>
+                                <option>Mike Johnson - Maintenance</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Assign</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openAssignModal() {
+            let assignModal = new bootstrap.Modal(document.getElementById('assignModal'));
+            assignModal.show();
+        }
+
+        document.getElementById("fixerForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            alert("Fixer added successfully!");
+            this.reset();
+        });
+
+        document.getElementById("assignForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            alert("Issue assigned successfully!");
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
