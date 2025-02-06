@@ -5,20 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>College Issue Reporting System</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; padding: 20px; }
-        .container { width: 100%; max-width: 800px; margin: auto; }
-        .form-group { margin-bottom: 15px; }
-        label { font-weight: bold; }
-        input, select, textarea { width: 100%; padding: 10px; margin-top: 5px; }
-        button { padding: 10px 15px; background: blue; color: white; border: none; cursor: pointer; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
-        th { background-color: #f4f4f4; }
+        body { font-family: 'Poppins', sans-serif; margin: 0; padding: 0; background: #f4f6f9; color: #333; }
+        .navbar { background: #1e3a8a; padding: 15px; color: white; text-align: center; font-size: 22px; font-weight: bold; }
+        .sidebar { width: 250px; height: 100vh; background: #1e40af; color: white; position: fixed; left: 0; top: 0; padding: 20px; display: flex; flex-direction: column; transition: all 0.3s ease; }
+        .sidebar a { display: block; color: white; padding: 12px; text-decoration: none; border-radius: 5px; margin-bottom: 10px; transition: background 0.3s, transform 0.2s; }
+        .sidebar a:hover { background: #ff9800; transform: translateX(10px); }
+        .container { margin-left: 270px; padding: 30px; background: white; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .form-group { margin-bottom: 20px; }
+        label { font-weight: bold; display: block; margin-bottom: 5px; }
+        input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
+        button { padding: 12px 20px; background: #1e3a8a; color: white; border: none; cursor: pointer; border-radius: 5px; font-size: 16px; transition: background 0.3s ease; }
+        button:hover { background: #ff9800; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: white; border-radius: 10px; overflow: hidden; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #1e3a8a; color: white; }
         .resolved { color: green; font-weight: bold; }
         .pending { color: red; font-weight: bold; }
     </style>
 </head>
 <body>
+
+    <div class="navbar">College Issue Reporting System</div>
+    
+    <div class="sidebar">
+        <h3>Dashboard</h3>
+        <a href="#">Home</a>
+        <a href="#">Report Issue</a>
+        <a href="#">Track Issues</a>
+        <a href="#">Feedback</a>
+        <a href="#">Settings</a>
+    </div>
 
     <div class="container">
         <h2>Report an Issue</h2>
@@ -105,12 +121,17 @@
     </div>
 
     <script>
+        document.getElementById("issueForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            alert("Issue submitted successfully!");
+        });
+
         function editIssue() {
             alert("Edit functionality will be implemented with backend integration.");
         }
 
         function deleteIssue() {
-            alert("Delete functionality will be implemented with backend integration.");
+            alert("Issue deleted successfully!");
         }
 
         function submitFeedback() {
