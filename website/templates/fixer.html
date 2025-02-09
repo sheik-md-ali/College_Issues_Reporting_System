@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fixer Dashboard</title>
+    <title>Fixer Dashboard & Management</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -47,6 +47,35 @@
 
         h2 {
             text-align: center;
+        }
+
+        .fixer-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .fixer-item {
+            background: #fff;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #ddd;
+        }
+
+        .remove-btn {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .remove-btn:hover {
+            background-color: darkred;
         }
 
         table {
@@ -124,9 +153,7 @@
             margin-bottom: 5px;
         }
 
-        .progress-update-form input, 
-        .progress-update-form select, 
-        .progress-update-form textarea {
+        .progress-update-form input, .progress-update-form select, .progress-update-form textarea {
             width: 100%;
             padding: 10px;
             margin: 5px 0;
@@ -156,8 +183,20 @@
     </nav>
 </header>
 
-
-
+<!-- Fixer Management Section -->
+<div class="container">
+    <h2>Fixer Management</h2>
+    <ul class="fixer-list" id="fixerList">
+        <li class="fixer-item">
+            <span>John Doe (Electrician)</span>
+            <button class="remove-btn" onclick="removeFixer(this)">Remove</button>
+        </li>
+        <li class="fixer-item">
+            <span>Jane Smith (Plumber)</span>
+            <button class="remove-btn" onclick="removeFixer(this)">Remove</button>
+        </li>
+    </ul>
+</div>
 
 <!-- Assigned Issues Section -->
 <div class="container">
@@ -208,7 +247,7 @@
             </select>
 
 
-
+            
 
             <label for="progress">Progress Update:</label>
             <textarea id="progress" name="progress" rows="4" placeholder="Describe the work done so far..."></textarea>
@@ -224,7 +263,11 @@
 
 
 <script>
-
+    function removeFixer(button) {
+        let fixerItem = button.parentElement;
+        fixerItem.remove();
+        alert("Fixer removed successfully!");
+    }
 
     function openModal(issueId) {
         document.getElementById("progress-modal").style.display = "block";
