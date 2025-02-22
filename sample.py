@@ -25,3 +25,21 @@ with app.app_context():
 
     db.session.commit()
     print("User creation/update process completed.")
+
+
+'''
+from flask import send_file
+import io
+
+@main.route('/issue_media/<int:issue_id>')
+def issue_media(issue_id):
+    issue = Issue.query.get_or_404(issue_id)
+    if issue.media:
+        return send_file(io.BytesIO(issue.media), mimetype='image/jpeg')  # Adjust mimetype as needed
+    else:
+        return "No image available", 404
+
+<img src="{{ url_for('main.issue_media', issue_id=issue.id) }}" alt="Issue Image">
+
+        
+'''

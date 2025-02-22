@@ -1,6 +1,8 @@
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
+from datetime import datetime
+from sqlalchemy import LargeBinary
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -28,3 +30,25 @@ class User(db.Model, UserMixin):
 
     def get_id(self):
         return str(self.id)
+
+
+class Issue(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    student_id = db.Column(db.Integer, nullable=False)
+    issue_type = db.Column(db.String(255), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    severity = db.Column(db.String(50), nullable=False)
+    location = db.Column(db.String(255), nullable=False)
+    media_path = db.Column(db.String(255), nullable=True)  # Store the file path
+    media_filename = db.Column(db.String(255), nullable=True)  # Store the filename
+    status = db.Column(db.String(50), default="Pending")
+    fixer_assigned = db.Column(db.Integer, nullable=True)
+    created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
+
+
+class Feedback(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    student_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    rating = db.Column(db.Integer, nullable=False)
+    feedback_text = db.Column(db.Text, nullable=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)

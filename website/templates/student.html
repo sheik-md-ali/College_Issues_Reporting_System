@@ -7,16 +7,16 @@
     <style>
         body { font-family: 'Poppins', sans-serif; margin: 0; padding: 0; background: #f4f6f9; color: #333; }
         .navbar { background: #1e3a8a; padding: 15px; color: white; text-align: center; font-size: 22px; font-weight: bold; }
-        .sidebar { width: 250px; height: 100vh; background: #25304d; color: white; position: fixed; left: 0; top: 0; padding: 20px; display: flex; flex-direction: column; transition: all 0.3s ease; }
-        .sidebar a { display: block; color: white; padding: 12px; text-decoration: none; border-radius: 5px; margin-bottom: 10px; transition: background 0.3s, transform 0.2s; }
-        .sidebar a:hover { background: #ff9800; transform: translateX(5px); }
+        .sidebar { width: 250px; height: 100vh; background: #25304d; color: white; position: fixed; left: 0; top: 0; padding: 20px; }
+        .sidebar a { display: block; color: white; padding: 12px; text-decoration: none; border-radius: 5px; margin-bottom: 10px; }
+        .sidebar a:hover { background: #ff9800; }
         .container { margin-left: 270px; padding: 30px; background: white; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
         .form-group { margin-bottom: 20px; }
         label { font-weight: bold; display: block; margin-bottom: 5px; }
         input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
-        button { padding: 12px 20px; background: #1e3a8a; color: white; border: none; cursor: pointer; border-radius: 5px; font-size: 16px; transition: background 0.3s ease; }
+        button { padding: 12px 20px; background: #1e3a8a; color: white; border: none; cursor: pointer; border-radius: 5px; font-size: 16px; }
         button:hover { background: #ff9800; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: white; border-radius: 10px; overflow: hidden; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
         th { background-color: #25304d; color: white; }
         .resolved { color: green; font-weight: bold; }
@@ -33,15 +33,14 @@
         <a href="#">Report Issue</a>
         <a href="#">Track Issues</a>
         <a href="#">Feedback</a>
-        <a href="#">Settings</a>
     </div>
 
     <div class="container">
         <h2>Report an Issue</h2>
-        <form id="issueForm">
+        <form action="{{ url_for('main.submit_issue') }}" method="POST" enctype="multipart/form-data">
             <div class="form-group">
                 <label>Issue Type:</label>
-                <select id="issueType">
+                <select name="issue_type">
                     <option>Electrical</option>
                     <option>Plumbing</option>
                     <option>Wi-Fi</option>
@@ -53,17 +52,17 @@
 
             <div class="form-group">
                 <label>Description:</label>
-                <textarea id="description" placeholder="Describe the issue..." required></textarea>
+                <textarea name="description" placeholder="Describe the issue..." required></textarea>
             </div>
 
             <div class="form-group">
-                <label>Upload Media:</label>
-                <input type="file" id="media">
+                <label>Upload Image:</label>
+                <input type="file" name="media">
             </div>
 
             <div class="form-group">
                 <label>Severity:</label>
-                <select id="severity">
+                <select name="severity">
                     <option>Low</option>
                     <option>Medium</option>
                     <option>High</option>
@@ -73,71 +72,85 @@
 
             <div class="form-group">
                 <label>Location:</label>
-                <input type="text" id="location" placeholder="Enter location" required>
+                <input type="text" name="location" placeholder="Enter location" required>
             </div>
 
             <button type="submit">Submit Issue</button>
         </form>
 
         <h2>Track Your Issues</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Issue</th>
-                    <th>Status</th>
-                    <th>Resolution</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody id="issueTable">
-                <tr>
-                    <td>Broken Wi-Fi</td>
-                    <td class="pending">Pending</td>
-                    <td>Not Resolved</td>
-                    <td>
-                        <button onclick="editIssue()">Edit</button>
-                        <button onclick="deleteIssue()">Delete</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+<table>
+    <thead>
+        <tr>
+            <th>Issue</th>
+            <th>Location</th>
+            <th>Image</th>
+            <th>Status</th>
+            <th>Fixer Assigned</th>
+            <th>Date and Time</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for issue in issues %}
+        <tr>
+            <td>{{ issue.issue_type }}</td>
+            <td>{{ issue.location }}</td>
+            <td>
+                {% if issue.media %}
+                    <img src="{{ url_for('main.get_image', issue_id=issue.id) }}" alt="Issue Image" style="width: 100px; height: auto;">
+                {% else %}
+                    No Image
+                {% endif %}
+            </td>
+            <td class="{{ 'resolved' if issue.status == 'Resolved' else 'pending' }}">{{ issue.status }}</td>
+            <td>{{ issue.fixer_assigned if issue.fixer_assigned else 'Not Assigned' }}</td>
+            <td>{{ issue.created_at }}</td>
+            <td>
+                <button onclick="deleteIssue({{ issue.id }})">Delete</button>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
         <h2>Feedback & Rating</h2>
-        <div class="form-group">
-            <label>Rate the Issue Resolution:</label>
-            <select id="rating">
-                <option>1 - Poor</option>
-                <option>2 - Fair</option>
-                <option>3 - Good</option>
-                <option>4 - Very Good</option>
-                <option>5 - Excellent</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label>Additional Feedback:</label>
-            <textarea id="feedback" placeholder="Your feedback..."></textarea>
-        </div>
-        <button onclick="submitFeedback()">Submit Feedback</button>
+        <form action="{{ url_for('main.submit_feedback') }}" method="POST">
+            <div class="form-group">
+                <label>Rate the Issue Resolution:</label>
+                <select name="rating">
+                    <option>1 - Poor</option>
+                    <option>2 - Fair</option>
+                    <option>3 - Good</option>
+                    <option>4 - Very Good</option>
+                    <option>5 - Excellent</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Additional Feedback:</label>
+                <textarea name="feedback" placeholder="Your feedback..."></textarea>
+            </div>
+            <button type="submit">Submit Feedback</button>
+        </form>
     </div>
 
-    <script>
-        document.getElementById("issueForm").addEventListener("submit", function(event) {
-            event.preventDefault();
-            alert("Issue submitted successfully!");
-        });
-
-        function editIssue() {
-            alert("Edit functionality will be implemented with backend integration.");
+    
+<script>
+    function deleteIssue(issueId) {
+        if (confirm("Are you sure you want to delete this issue?")) {
+            fetch(`/delete_issue/${issueId}`, { method: "POST" })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    alert("Failed to delete issue.");
+                }
+            });
         }
-
-        function deleteIssue() {
-            alert("Issue deleted successfully!");
-        }
-
-        function submitFeedback() {
-            alert("Feedback submitted successfully!");
-        }
+    }
     </script>
+    
 
 </body>
 </html>

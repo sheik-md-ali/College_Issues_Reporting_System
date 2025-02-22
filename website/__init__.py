@@ -3,6 +3,17 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 import os
 
+
+
+
+
+
+UPLOAD_FOLDER = "static/uploads"
+# Ensure the folder exists
+
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+
 # Initialize database and login manager
 db = SQLAlchemy()
 login_manager = LoginManager()
@@ -14,8 +25,9 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 def create_app():
-    app = Flask(__name__)
-    app.config.from_object(Config)
+    app = Flask(__name__, static_folder='static')
+    app.config.from_object(Config) 
+    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
     db.init_app(app)  # Initialize database
     login_manager.init_app(app)  # Initialize login manager
