@@ -97,23 +97,50 @@ def submit_feedback():
     flash("Feedback submitted successfully!", "success")
     return redirect(url_for('main.student_dashboard'))
 
+
 from flask import send_from_directory
 
 @main.route('/get_image/<int:issue_id>')
-@login_required
 def get_image(issue_id):
     issue = Issue.query.get(issue_id)
-    if issue and issue.media_path:
-        return send_from_directory(UPLOAD_FOLDER, issue.media_filename)
-    return "No Image", 404
 
+    if not issue:
+        print(f"DEBUG: No issue found with ID {issue_id}")
+        return jsonify({"error": "Issue not found"}), 404
+
+    if not issue.media_path:
+        print(f"DEBUG: No media path found for issue ID {issue_id}")
+        return jsonify({"error": "No image attached to this issue"}), 404
+
+    # Extract the filename only
+    filename = os.path.basename(issue.media_path)
+    file_path = os.path.join(UPLOAD_FOLDER, filename).replace("\\", "/") 
+
+    # Debugging: Check if the file actually exists
+    if not os.path.exists(file_path):
+        print(f"DEBUG: File not found at {file_path}")
+        return jsonify({"error": "File not found"}), 404
+
+    print(f"DEBUG: Serving file {file_path}")
+    return send_from_directory(UPLOAD_FOLDER, filename)
 
 @main.route('/delete_issue/<int:issue_id>', methods=['POST'])
 @login_required
 def delete_issue(issue_id):
     issue = Issue.query.get(issue_id)
+    
     if issue and issue.student_id == current_user.id:
+        # Get the full file path
+        file_path = os.path.join(UPLOAD_FOLDER, os.path.basename(issue.media_path))
+        
+        # Delete the image file if it exists
+        if os.path.exists(file_path):
+            os.remove(file_path)
+
+        # Delete issue record from database
         db.session.delete(issue)
         db.session.commit()
+        
         return jsonify({"success": True})
+    
     return jsonify({"success": False}), 403

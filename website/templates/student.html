@@ -97,12 +97,14 @@
             <td>{{ issue.issue_type }}</td>
             <td>{{ issue.location }}</td>
             <td>
-                {% if issue.media %}
+                {% if issue.media_path %}
+                    <p>DEBUG URL: {{ url_for('main.get_image', issue_id=issue.id) }}</p> <!-- Debugging -->
                     <img src="{{ url_for('main.get_image', issue_id=issue.id) }}" alt="Issue Image" style="width: 100px; height: auto;">
                 {% else %}
-                    No Image
+                    <p>DEBUG: No Image Found</p>
                 {% endif %}
             </td>
+                     
             <td class="{{ 'resolved' if issue.status == 'Resolved' else 'pending' }}">{{ issue.status }}</td>
             <td>{{ issue.fixer_assigned if issue.fixer_assigned else 'Not Assigned' }}</td>
             <td>{{ issue.created_at }}</td>
