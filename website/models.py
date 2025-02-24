@@ -39,7 +39,6 @@ class Issue(db.Model):
     description = db.Column(db.Text, nullable=False)
     severity = db.Column(db.String(50), nullable=False)
     location = db.Column(db.String(255), nullable=False)
-    media_path = db.Column(db.String(255), nullable=True)  # Store the file path
     media_filename = db.Column(db.String(255), nullable=True)  # Store the filename
     status = db.Column(db.String(50), default="Pending")
     fixer_assigned = db.Column(db.Integer, nullable=True)
