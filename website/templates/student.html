@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>College Issue Reporting System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        body { font-family: 'Poppins', sans-serif; margin: 0; padding: 0; background: #f4f6f9; color: #333; }
+        body { font-family: 'Poppins', sans-serif; margin: 0; padding: 0; background: #eef2f7; color: #333; }
         .navbar { background: #1e3a8a; padding: 15px; color: white; text-align: center; font-size: 22px; font-weight: bold; }
         .sidebar { width: 250px; height: 100vh; background: #25304d; color: white; position: fixed; left: 0; top: 0; padding: 20px; }
-        .sidebar a { display: block; color: white; padding: 12px; text-decoration: none; border-radius: 5px; margin-bottom: 10px; }
+        .sidebar a { display: block; color: white; padding: 12px; text-decoration: none; border-radius: 5px; margin-bottom: 10px; font-size: 18px; }
         .sidebar a:hover { background: #ff9800; }
         .container { margin-left: 270px; padding: 30px; background: white; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
         .form-group { margin-bottom: 20px; }
@@ -16,30 +17,57 @@
         input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
         button { padding: 12px 20px; background: #1e3a8a; color: white; border: none; cursor: pointer; border-radius: 5px; font-size: 16px; }
         button:hover { background: #ff9800; }
+        .table-container { overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
         th { background-color: #25304d; color: white; }
         .resolved { color: green; font-weight: bold; }
         .pending { color: red; font-weight: bold; }
+        .quote { text-align: center; font-style: italic; font-size: 18px; margin-bottom: 20px; color: #1e3a8a; }
+        .sidebar i { margin-right: 10px; }
+        
+        @media (max-width: 768px) {
+    .navbar { 
+        display: none; 
+    }
+    .container { 
+        margin-left: 0; 
+        padding: 20px; 
+    }
+    .sidebar { 
+        width: 100%; 
+        height: auto; 
+        position: relative; 
+        padding: 10px; 
+    }
+    .sidebar a { 
+        text-align: center; 
+        padding: 10px; 
+        font-size: 16px; 
+    }
+}
+
+    
+
     </style>
 </head>
 <body>
-
     <div class="navbar">College Issue Reporting System</div>
-    
     <div class="sidebar">
         <h3>Dashboard</h3>
-        <a href="#">Home</a>
-        <a href="#">Report Issue</a>
-        <a href="#">Track Issues</a>
-        <a href="#">Feedback</a>
+        <a href="#"><i class="fas fa-home"></i> Home</a>
+        <a href="#report"><i class="fas fa-exclamation-circle"></i> Report Issue</a>
+        <a href="#track"><i class="fas fa-tasks"></i> Track Issues</a>
+        <a href="#feedback"><i class="fas fa-comments"></i> Feedback</a>
     </div>
 
     <div class="container">
-        <h2>Report an Issue</h2>
+        <p class="quote">"A small complaint today can make a big difference tomorrow. Speak up for a better campus!"</p>
+        <section id="report">
+            <h2>Report an Issue</h2>
         <form action="{{ url_for('main.submit_issue') }}" method="POST" enctype="multipart/form-data">
             <div class="form-group">
-                <label>Issue Type:</label>
+                <label><i class="fas fa-list" style="color:#e91e63;"></i> Issue Type:</label>
                 <select name="issue_type">
                     <option>Electrical</option>
                     <option>Plumbing</option>
@@ -49,19 +77,16 @@
                     <option>Other</option>
                 </select>
             </div>
-
             <div class="form-group">
-                <label>Description:</label>
+                <label><i class="fas fa-edit" style="color:#3f51b5;"></i> Description:</label>
                 <textarea name="description" placeholder="Describe the issue..." required></textarea>
             </div>
-
             <div class="form-group">
-                <label>Upload Image:</label>
+                <label><i class="fas fa-upload" style="color:#009688;"></i> Upload Image:</label>
                 <input type="file" name="media">
             </div>
-
             <div class="form-group">
-                <label>Severity:</label>
+                <label><i class="fas fa-exclamation-triangle" style="color:#ff5722;"></i> Severity:</label>
                 <select name="severity">
                     <option>Low</option>
                     <option>Medium</option>
@@ -69,59 +94,64 @@
                     <option>Critical</option>
                 </select>
             </div>
-
             <div class="form-group">
-                <label>Location:</label>
+                <label><i class="fas fa-map-marker-alt" style="color:#4caf50;"></i> Location:</label>
                 <input type="text" name="location" placeholder="Enter location" required>
             </div>
-
-            <button type="submit">Submit Issue</button>
+            <button type="submit"><i class="fas fa-paper-plane" style="color:#ffeb3b;"></i> Submit Issue</button>
         </form>
 
-        <h2>Track Your Issues</h2>
-<table>
-    <thead>
-        <tr>
-            <th>Issue</th>
-            <th>Location</th>
-            <th>Image</th>
-            <th>Status</th>
-            <th>Fixer Assigned</th>
-            <th>Date and Time</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for issue in issues %}
-        <tr>
-            <td>{{ issue.issue_type }}</td>
-            <td>{{ issue.location }}</td>
-            <td>
-                {% if issue.media_filename %}
-                    <img src="{{ url_for('main.uploaded_file', filename=issue.media_filename) }}" 
-                         alt="Issue Image" 
-                         style="width: 100px; height: auto;">
-                {% else %}
-                    <p>No Image Available</p>
-                {% endif %}
-            </td>
-            
-                     
-            <td class="{{ 'resolved' if issue.status == 'Resolved' else 'pending' }}">{{ issue.status }}</td>
-            <td>{{ issue.fixer_assigned if issue.fixer_assigned else 'Not Assigned' }}</td>
-            <td>{{ issue.created_at }}</td>
-            <td>
-                <button onclick="deleteIssue({{ issue.id }})">Delete</button>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-
-        <h2>Feedback & Rating</h2>
+        </section>
+        <section id="track">
+            <h2>Track Your Issues</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Issue</th>
+                            <th>Location</th>
+                            <th>Image</th>
+                            <th>Status</th>
+                            <th>Fixer Assigned</th>
+                            <th>Date and Time</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for issue in issues %}
+                        <tr>
+                            <td><i class="fas fa-tools" style="color: #f4a261;"></i> {{ issue.issue_type }}</td>
+                            <td><i class="fas fa-map-marker-alt" style="color: #1e3a8a;"></i> {{ issue.location }}</td>
+                            <td>
+                                {% if issue.media_filename %}
+                                    <img src="{{ url_for('main.uploaded_file', filename=issue.media_filename) }}" 
+                                         alt="Issue Image" 
+                                         style="width: 100px; height: auto;">
+                                {% else %}
+                                    <p>No Image Available</p>
+                                {% endif %}
+                            </td>
+                            <td class="{{ 'resolved' if issue.status == 'Resolved' else 'pending' }}">
+                                <i class="fas fa-flag" style="color: {% if issue.status == 'Resolved' %}green{% else %}red{% endif %};"></i>
+                                {{ issue.status }}
+                            </td>
+                            <td><i class="fas fa-user" style="color: #2a9d8f;"></i> {{ issue.fixer_assigned if issue.fixer_assigned else 'Not Assigned' }}</td>
+                            <td><i class="fas fa-calendar" style="color: #f77f00;"></i> {{ issue.created_at }}</td>
+                            <td>
+                                <button onclick="deleteIssue({{ issue.id }})"><i class="fas fa-trash" style="color: white;"></i> Delete</button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+        <section id="feedback">
+            <h2>Feedback & Rating</h2>
         <form action="{{ url_for('main.submit_feedback') }}" method="POST">
             <div class="form-group">
-                <label>Rate the Issue Resolution:</label>
+                <label><i class="fas fa-star" style="color: #ff9800;"></i> Rate the Issue Resolution:</label>
                 <select name="rating">
                     <option>1 - Poor</option>
                     <option>2 - Fair</option>
@@ -131,11 +161,12 @@
                 </select>
             </div>
             <div class="form-group">
-                <label>Additional Feedback:</label>
+                <label><i class="fas fa-comment" style="color: #3f51b5;"></i> Additional Feedback:</label>
                 <textarea name="feedback" placeholder="Your feedback..."></textarea>
             </div>
-            <button type="submit">Submit Feedback</button>
+            <button type="submit"><i class="fas fa-paper-plane" style="color:#ffeb3b;"></i> Submit Feedback</button>
         </form>
+        </section>
     </div>
 
     
@@ -154,7 +185,11 @@
         }
     }
     </script>
-    
+    <script>
+        function toggleMenu() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
+    </script>
 
 </body>
 </html>
