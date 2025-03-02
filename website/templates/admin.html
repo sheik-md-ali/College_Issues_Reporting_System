@@ -5,203 +5,505 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - College Issue Reporting</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body {
-            background-color: #f4f4f9;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #eef2f7;
+            color: #333;
+        }
+        .navbar {
+            background: #1e3a8a;
+            padding: 15px;
+            color: white;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         .sidebar {
-            height: 100vh;
             width: 250px;
+            height: 100vh;
+            background: #25304d;
+            color: white;
             position: fixed;
-            background-color: #212529;
-            padding-top: 20px;
+            left: 0;
+            top: 0;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
         }
         .sidebar a {
+            display: block;
+            color: white;
             padding: 12px;
             text-decoration: none;
+            border-radius: 5px;
+            margin-bottom: 10px;
             font-size: 18px;
-            color: white;
-            display: block;
-            transition: 0.3s;
         }
         .sidebar a:hover {
-            background-color: #17a2b8;
+            background: #ff9800;
         }
-        .content {
-            margin-left: 260px;
+        .sidebar i {
+            margin-right: 10px;
+        }
+        .container {
+            margin-left: 270px;
             padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            min-height: 100vh;
         }
         .profile-card {
             text-align: center;
             padding: 20px;
-            background: #343a40;
+            background: #34495e;
             color: white;
             border-radius: 8px;
-            margin: 10px;
+            margin-bottom: 20px;
         }
         .profile-card img {
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
-            width: 90px;
-            height: 90px;
-            border: 3px solid white;
             margin-bottom: 10px;
+            border: 3px solid #ff9800;
         }
-        .modal-header {
-            background-color: #17a2b8;
+        .profile-card h5 {
+            margin: 10px 0 5px;
+            font-size: 18px;
+        }
+        .profile-card p {
+            margin: 0;
+            font-size: 14px;
+            color: #bdc3c7;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 12px 20px;
+            background: #1e3a8a;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #ff9800;
+        }
+        .table-container {
+            overflow-x: auto;
+            width: 100%;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #25304d;
             color: white;
         }
-        .card-header {
+        .resolved {
+            color: green;
             font-weight: bold;
         }
-        .bg-primary {
-            background-color: #007bff !important;
+        .pending {
+            color: red;
+            font-weight: bold;
         }
-        .bg-info {
-            background-color: #17a2b8 !important;
+        .quote {
+            text-align: center;
+            font-style: italic;
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #1e3a8a;
         }
-        .bg-secondary {
-            background-color: #6c757d !important;
+        .table-icons {
+            font-size: 18px;
+            margin-right: 8px;
         }
+        .table-icons.green {
+            color: green;
+        }
+        .table-icons.red {
+            color: red;
+        }
+        .table-icons.blue {
+            color: #1e3a8a;
+        }
+        .table-icons.orange {
+            color: #ff9800;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .navbar {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 10px;
+                font-size: 18px;
+            }
+            .container {
+                margin-left: 0;
+                padding: 15px;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 10px;
+                box-shadow: none;
+            }
+            .sidebar a {
+                text-align: center;
+                padding: 10px;
+                font-size: 16px;
+                margin-bottom: 5px;
+            }
+            .table-container {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            table {
+                width: 100%;
+                display: block;
+                overflow-x: auto;
+            }
+            th, td {
+                padding: 8px;
+                font-size: 14px;
+            }
+            .card {
+                margin-bottom: 15px;
+            }
+            .card-header {
+                padding: 10px;
+                font-size: 16px;
+            }
+            .card-body {
+                padding: 15px;
+            }
+            .quote {
+                font-size: 16px;
+                margin-bottom: 15px;
+            }
+            button {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+            .form-control {
+                padding: 8px;
+                font-size: 14px;
+            }
+        }
+
+        /* Laptop Screen Adjustments */
+        @media (min-width: 769px) {
+            .container {
+                margin-left: 270px;
+                padding: 30px;
+            }
+            .sidebar {
+                width: 250px;
+            }
+            .table-container {
+                overflow-x: auto;
+            }
+            table {
+                width: 100%;
+            }
+            th, td {
+                padding: 15px;
+                font-size: 16px;
+            }
+            .card {
+                margin-bottom: 20px;
+            }
+            .card-header {
+                padding: 15px;
+                font-size: 18px;
+            }
+            .card-body {
+                padding: 20px;
+            }
+            .quote {
+                font-size: 20px;
+                margin-bottom: 25px;
+            }
+            button {
+                padding: 15px 25px;
+                font-size: 18px;
+            }
+            .form-control {
+                padding: 12px;
+                font-size: 16px;
+            }
+        }
+        @media (min-width: 1024px) {
+    .container {
+        max-width: 85%;
+        margin-left: 270px;
+        padding: 40px;
+    }
+}
+
     </style>
 </head>
 <body>
 
+    <!-- Navbar -->
+    <div class="navbar">
+        College Issue Reporting System
+    </div>
+
     <!-- Sidebar -->
     <div class="sidebar">
-        <h4 class="text-white text-center">Admin Panel</h4>
         <div class="profile-card">
-            <img src="https://via.placeholder.com/90" alt="Admin">
-            <h5 class="mb-1">Admin Name</h5>
-            <p class="mb-1">admin@example.com</p>
+            <img src="https://imgs.search.brave.com/ccrIrNr4LNvSNWjMcqpATENgHj2L7T9DNhbcrT7XoTE/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly90My5m/dGNkbi5uZXQvanBn/LzAzLzAxLzUxLzU4/LzM2MF9GXzMwMTUx/NTg0M19sWG5yZ3BO/ZW5TSEd3Y2dNSXpv/WlYzOEtmUGlLTnlD/ei5qcGc" alt="Admin Icon">
+            <h5>ADMIN</h5>
+            <p>admin@gmail.com</p>
         </div>
-        <a href="#">Dashboard</a>
-        <a href="#">Reported Issues</a>
-        <a href="#">Assign Issues</a>
-        <a href="#">Manage Fixers</a>
-        <a href="#">Reports & Analytics</a>
-        <a href="#">Logout</a>
+        <a href="#dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+        <a href="#reported-issues"><i class="fas fa-exclamation-circle"></i> Reported Issues</a>
+        <a href="#add-fixer"><i class="fas fa-user-plus"></i> Add New Fixer</a>
+        <a href="#fixers-list"><i class="fas fa-users-cog"></i> Fixers List</a>
+        <a href="{{ url_for('auth.logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a>
     </div>
 
     <!-- Main Content -->
-    <div class="content">
-        <h2 class="mb-3">Welcome, Admin</h2>
-
-        <!-- Reports & Analytics Section (Moved to Top) -->
-        <div class="card mb-4">
-            <div class="card-header bg-secondary text-white">
-                Reports & Analytics
-            </div>
-            <div class="card-body">
-                <p><b>Total Issues:</b> <span id="totalIssues">10</span></p>
-                <p><b>Resolved Issues:</b> <span id="resolvedIssues">6</span></p>
-                <p><b>Pending Issues:</b> <span id="pendingIssues">4</span></p>
-            </div>
+    <div class="container">
+        <!-- Quote Section -->
+        <div class="quote">
+            "Efficiency is doing things right; effectiveness is doing the right things."
         </div>
 
-        <!-- Reported Issues Table -->
-        <div class="card">
-            <div class="card-header bg-primary text-white">
-                Reported Issues
+        <!-- Dashboard Section -->
+        <section id="dashboard">
+            <h2 class="mb-4">Welcome, Admin</h2>
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-chart-line"></i> Reports & Analytics
+                </div>
+                <div class="card-body">
+                    <p>Total Issues: {{ total_issues }}</p>
+                    <p>Resolved Issues: {{ resolved_issues }}</p>
+                    <p>Pending Issues: {{ pending_issues }}</p>
+                </div>
             </div>
-            <div class="card-body">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Issue Type</th>
-                            <th>Location</th>
-                            <th>Severity</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="issueTable">
-                        <tr>
-                            <td>1</td>
-                            <td>Wi-Fi Problem</td>
-                            <td>Library</td>
-                            <td><span class="badge bg-danger">High</span></td>
-                            <td><span class="badge bg-warning">Pending</span></td>
-                            <td>
-                                <button class="btn btn-sm btn-primary" onclick="openAssignModal()">Assign</button>
-                                <button class="btn btn-sm btn-success">Resolve</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+        </section>
+
+        <!-- Reported Issues Section -->
+        <section id="reported-issues">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-exclamation-circle"></i> Reported Issues
+                </div>
+                <div class="card-body">
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Title</th>
+                                    <th>Description</th>
+                                    <th>Image</th>
+                                    <th>Status</th>
+                                    <th>Fixer Assigned</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for issue in issues %}
+                                <tr>
+                                    <td><i class="fas fa-hashtag table-icons blue"></i>{{ issue.id }}</td>
+                                    <td><i class="fas fa-tag table-icons orange"></i>{{ issue.issue_type }}</td>
+                                    <td><i class="fas fa-align-left table-icons blue"></i>{{ issue.description }}</td>
+                                    <td>
+                                        {% if issue.media_filename %}
+                                            <img src="{{ url_for('main.uploaded_file', filename=issue.media_filename) }}" 
+                                                 alt="Issue Image" 
+                                                 style="width: 100px; height: auto;">
+                                        {% else %}
+                                            <p>No Image Available</p>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if issue.status == 'Resolved' %}
+                                            <i class="fas fa-check-circle table-icons green"></i> Resolved
+                                        {% else %}
+                                            <i class="fas fa-exclamation-circle table-icons red"></i> Pending
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <i class="fas fa-user table-icons blue"></i>
+                                        {{ issue.fixer_assigned if issue.fixer_assigned else 'Not Assigned' }}
+                                    </td>
+                                    <td>
+                                        <form class="assign-fixer-form" method="POST" action="{{ url_for('main.assign_fixer') }}">
+                                            <input type="hidden" name="issue_id" value="{{ issue.id }}">
+                                            <select name="fixer_id" class="form-control">
+                                                <option value="">Select Fixer</option>
+                                                {% for fixer in fixers %}
+                                                <option value="{{ fixer.id }}">{{ fixer.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                            <button type="submit" class="btn btn-primary mt-2">Assign</button>
+                                        </form>
+                                        <button class="btn btn-danger btn-sm mt-2" onclick="deleteIssue({{ issue.id }})">
+                                            <i class="fas fa-trash"></i> Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-        </div>
+        </section>
 
         <!-- Add New Fixer Section -->
-        <div class="card mt-4">
-            <div class="card-header bg-info text-white">
-                Add New Fixer
-            </div>
-            <div class="card-body">
-                <form id="fixerForm">
-                    <div class="mb-3">
-                        <label class="form-label">Full Name</label>
-                        <input type="text" class="form-control" placeholder="Enter fixer's name" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Email</label>
-                        <input type="email" class="form-control" placeholder="Enter fixer's email" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Specialization</label>
-                        <select class="form-control">
-                            <option>Electrical</option>
-                            <option>Plumbing</option>
-                            <option>IT Support</option>
-                            <option>Maintenance</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-success">Add Fixer</button>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Assign Issue Modal -->
-    <div class="modal fade" id="assignModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Assign Issue</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        <section id="add-fixer">
+            <div class="card mt-4">
+                <div class="card-header">
+                    <i class="fas fa-user-plus"></i> Add New Fixer
                 </div>
-                <div class="modal-body">
-                    <form id="assignForm">
-                        <div class="mb-3">
-                            <label class="form-label">Select Fixer</label>
-                            <select class="form-control">
-                                <option>John Doe - IT Support</option>
-                                <option>Jane Smith - Electrical</option>
-                                <option>Mike Johnson - Maintenance</option>
-                            </select>
+                <div class="card-body">
+                    <form action="{{ url_for('main.add_fixer') }}" method="POST">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" name="name" class="form-control" placeholder="Enter fixer's name" required>
                         </div>
-                        <button type="submit" class="btn btn-primary">Assign</button>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" name="email" class="form-control" placeholder="Enter fixer's email" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" name="password" class="form-control" placeholder="Enter initial password" required>
+                        </div>
+                        <button type="submit" class="btn btn-success">Add Fixer</button>
                     </form>
                 </div>
             </div>
-        </div>
+        </section>
+
+        <!-- Fixers List Section -->
+        <section id="fixers-list">
+            <div class="card mt-4">
+                <div class="card-header">
+                    <i class="fas fa-users-cog"></i> Fixers List
+                </div>
+                <div class="card-body">
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for fixer in fixers %}
+                                <tr>
+                                    <td><i class="fas fa-hashtag table-icons blue"></i>{{ fixer.id }}</td>
+                                    <td><i class="fas fa-user table-icons orange"></i>{{ fixer.name }}</td>
+                                    <td><i class="fas fa-envelope table-icons blue"></i>{{ fixer.email }}</td>
+                                    <td>
+                                        <button class="btn btn-danger btn-sm" onclick="deleteFixer({{ fixer.id }})">
+                                            <i class="fas fa-trash"></i> Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
 
     <script>
-        function openAssignModal() {
-            let assignModal = new bootstrap.Modal(document.getElementById('assignModal'));
-            assignModal.show();
+        function deleteFixer(fixerId) {
+            if (confirm("Are you sure you want to delete this fixer?")) {
+                fetch(`/delete_fixer/${fixerId}`, { method: "POST" })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert("Failed to delete fixer.");
+                    }
+                });
+            }
         }
 
-        document.getElementById("fixerForm").addEventListener("submit", function(event) {
-            event.preventDefault();
-            alert("Fixer added successfully!");
-            this.reset();
+        function deleteIssue(issueId) {
+            if (confirm("Are you sure you want to delete this issue?")) {
+                fetch(`/delete_issue/${issueId}`, { method: "POST" })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert("Failed to delete issue.");
+                    }
+                });
+            }
+        }
+
+        document.querySelectorAll('.assign-fixer-form').forEach(form => {
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                let formData = new FormData(this);
+                fetch(this.action, {
+                    method: 'POST',
+                    body: formData
+                }).then(response => response.json()).then(data => {
+                    alert(data.message);
+                    if (data.success) location.reload();
+                }).catch(error => console.error('Error:', error));
+            });
         });
 
-        document.getElementById("assignForm").addEventListener("submit", function(event) {
-            event.preventDefault();
-            alert("Issue assigned successfully!");
+        // Smooth scrolling for sidebar links
+        document.querySelectorAll('.sidebar a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetSection = document.getElementById(targetId);
+                if (targetSection) {
+                    targetSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
         });
     </script>
 

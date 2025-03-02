@@ -1,8 +1,9 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, send_file, current_app, jsonify, send_from_directory
 from flask_login import login_required, current_user
-from website.models import Feedback,Issue
+from website.models import Feedback,Issue, User
 from . import db
 from werkzeug.utils import secure_filename
+from werkzeug.security import generate_password_hash, check_password_hash
 import os
 
 main = Blueprint('main', __name__)
@@ -13,11 +14,78 @@ def index():
     return render_template('login.html')
 
 @main.route('/admin-dashboard')
-@login_required
 def admin_dashboard():
+    issues = Issue.query.all()
+    fixers = User.query.filter_by(role='fixer').all()
+    total_issues = Issue.query.count()
+    resolved_issues = Issue.query.filter_by(status='Resolved').count()
+    pending_issues = total_issues - resolved_issues
+
+    return render_template('admin.html', 
+                           issues=issues, 
+                           fixers=fixers,
+                           total_issues=total_issues, 
+                           resolved_issues=resolved_issues, 
+                           pending_issues=pending_issues)
+
+@main.route('/delete_fixer/<int:fixer_id>', methods=['POST'])
+def delete_fixer(fixer_id):
+    fixer = User.query.get(fixer_id)
+    if fixer and fixer.role == 'fixer':
+        db.session.delete(fixer)
+        db.session.commit()
+        return jsonify({"success": True, "message": "Fixer deleted successfully."})
+    return jsonify({"success": False, "message": "Fixer not found or cannot be deleted."})
+
+
+@main.route('/admin/assign_fixer', methods=['POST'])
+def assign_fixer():
+    issue_id = request.form.get('issue_id')
+    fixer_id = request.form.get('fixer_id')
+
+    issue = Issue.query.get(issue_id)
+    fixer = User.query.get(fixer_id)
+
+    if issue and fixer and fixer.role == 'fixer':
+        issue.fixer_assigned = fixer.id
+        db.session.commit()
+        return jsonify({'success': True, 'message': 'Fixer assigned successfully'})
+
+    return jsonify({'success': False, 'message': 'Failed to assign fixer'})
+
+@main.route('/admin/resolve_issue/<int:issue_id>', methods=['POST'])
+def resolve_issue(issue_id):
+    issue = Issue.query.get(issue_id)
+    if issue:
+        issue.status = 'Resolved'
+        db.session.commit()
+        flash('Issue marked as resolved!', 'success')
+
+    return redirect(url_for('main.admin_dashboard'))
+
+@main.route('/admin/add_fixer', methods=['POST'])
+@login_required
+def add_fixer():
     if current_user.role != 'admin':
         return "Access Denied", 403
-    return render_template('admin.html')
+
+    name = request.form.get('name')
+    email = request.form.get('email')
+    password = request.form.get('password')  # Admin sets initial password
+    hashed_password = generate_password_hash(password, method='scrypt')
+
+    # Check if fixer already exists
+    existing_fixer = User.query.filter_by(email=email).first()
+    if existing_fixer:
+        flash("Fixer already exists!", "danger")
+        return redirect(url_for('main.admin_dashboard'))
+
+    fixer = User(name=name, email=email, password_hash=hashed_password, role="fixer")
+    db.session.add(fixer)
+    db.session.commit()
+
+    flash("Fixer added successfully!", "success")
+    return redirect(url_for('main.admin_dashboard'))
 
 
 @main.route('/fixer-dashboard')
@@ -94,29 +162,27 @@ def submit_feedback():
     flash("Feedback submitted successfully!", "success")
     return redirect(url_for('main.student_dashboard'))
 
-
 @main.route('/delete_issue/<int:issue_id>', methods=['POST'])
 @login_required
 def delete_issue(issue_id):
     issue = Issue.query.get(issue_id)
-    
-    if issue and issue.student_id == current_user.id:
-        if issue.media_filename:  # Check if an image exists
-            # Get the full file path
+
+    # Allow admin to delete any issue
+    if issue and (current_user.role == "admin" or issue.student_id == current_user.id):  
+        if issue.media_filename:
             upload_folder = os.path.join(current_app.root_path, 'static/uploads')
             file_path = os.path.join(upload_folder, issue.media_filename)
-            
-            # Delete the image file if it exists
+
             if os.path.exists(file_path):
                 os.remove(file_path)
 
-        # Delete issue record from database
         db.session.delete(issue)
         db.session.commit()
-        
+
         return jsonify({"success": True})
-    
+
     return jsonify({"success": False}), 403
+
 
 
 @main.route('/uploads/<filename>')
