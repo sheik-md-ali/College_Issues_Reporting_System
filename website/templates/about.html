@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us - College Issue Reporting System</title>
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+    integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+    }
+
+    /* -----------------company----------------------- */
+    .company {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+
+    .company-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .img {
+      width: 100%;
+      margin: 1rem 0rem 0rem 2rem;
+    }
+
+    .img img {
+      width: 100%;
+    }
+
+    .company-info {
+      width: 100%;
+      margin-right: 4rem;
+    }
+
+    .company-info span {
+      font-size: 2.5rem;
+      font-weight: bold;
+    }
+
+    .company-info span .our {
+      color: #ffdc0e;
+    }
+
+    .company-info p {
+      font-size: 1.1rem;
+    }
+
+    /* ----------------------------------------------- */
+
+    .team {
+      display: flex;
+      justify-content: center;
+    }
+
+    .team span {
+      font-size: 2.5rem;
+      font-weight: bold;
+      border-bottom: 4px solid #ffdc0e;
+    }
+
+    .container {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      position: relative;
+      background: #fff;
+      max-width: 350px;
+      width: 350px;
+      margin: 20px;
+      border-radius: 2px;
+      box-shadow: 0 5px 25px rgb(1 1 1 / 10%);
+    }
+
+    .card-image {
+      max-height: 50vh;
+      overflow: hidden;
+    }
+
+    .card-image img {
+      max-width: 100%;
+      height: auto;
+      visibility: hidden;
+    }
+
+    .card-title span {
+      visibility: hidden;
+    }
+
+    .yellow-surname {
+      color: #ffdc0e;
+    }
+
+    .card-description span {
+      visibility: hidden;
+    }
+
+    .card-mediaIcons a i {
+      visibility: hidden;
+    }
+
+    .card-info {
+      position: relative;
+      color: #222;
+      padding: 20px;
+    }
+
+    .card-info h3 {
+      font-size: 1.4em;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .card-info p {
+      font-size: 1em;
+      margin-bottom: 15px;
+    }
+
+    .card-info .card-mediaIcons {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .card-info .card-mediaIcons a {
+      color: #999;
+      font-size: 1.4em;
+      margin: 0 10px;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-decoration: none;
+      border-radius: 50%;
+      transition: color 0.3s ease;
+    }
+
+    .card-info .card-mediaIcons a:hover {
+      color: #222;
+    }
+
+    .card-mediaIcons a img {
+      width: 40px;
+    }
+
+    .loading {
+      position: relative;
+      background: #e2e2e2;
+      overflow: hidden;
+    }
+
+    .loading:before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+      );
+      transform: translateX(-100%);
+      animation: loading 1.5s infinite;
+    }
+
+    .info {
+      font-size: 1.2rem;
+      font-weight: 500;
+    }
+
+    @keyframes loading {
+      100% {
+        transform: translateX(100%);
+      }
+    }
+
+    /* ------------------------------footer---------------------------------------- */
+    footer {
+      background: #000;
+      width: 100%;
+      bottom: 0;
+      left: 0;
+    }
+
+    footer .content {
+      max-width: 1250px;
+      margin: auto;
+      padding: 30px 40px 40px 40px;
+    }
+
+    footer .content .top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 50px;
+    }
+
+    .content .top .logo-details {
+      color: #fdd166;
+      font-size: 30px;
+    }
+
+    .content .top .media-icons {
+      display: flex;
+    }
+
+    .content .top .media-icons a {
+      height: 40px;
+      width: 40px;
+      margin: 0 8px;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 40px;
+      color: #fff;
+      font-size: 17px;
+      text-decoration: none;
+      transition: all 0.4s ease;
+    }
+
+    .top .media-icons a:nth-child(1) {
+      background: #4267b2;
+    }
+
+    .top .media-icons a:nth-child(1):hover {
+      color: #4267b2;
+      background: #fff;
+    }
+
+    .top .media-icons a:nth-child(2) {
+      background: #e1306c;
+    }
+
+    .top .media-icons a:nth-child(2):hover {
+      color: #e1306c;
+      background: #fff;
+    }
+
+    footer .content .link-boxes {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    footer .content .link-boxes .box {
+      width: calc(100% / 5 - 10px);
+    }
+
+    .content .link-boxes .box .link_name {
+      color: #fff;
+      font-size: 18px;
+      font-weight: 400;
+      margin-bottom: 10px;
+      position: relative;
+    }
+
+    .link-boxes .box .link_name::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -2px;
+      height: 2px;
+      width: 35px;
+      background: #fdd166;
+    }
+
+    .content .link-boxes .box li {
+      margin: 6px 0;
+      list-style: none;
+    }
+
+    .content .link-boxes .box li a {
+      color: #fff;
+      font-size: 14px;
+      font-weight: 400;
+      text-decoration: none;
+      opacity: 0.8;
+      transition: all 0.4s ease;
+    }
+
+    .content .link-boxes .box li a:hover {
+      opacity: 1;
+      text-decoration: underline;
+    }
+
+    footer .bottom-details {
+      width: 100%;
+      background: #000;
+      border-top: 0.5px solid #fff;
+    }
+
+    footer .bottom-details .bottom_text {
+      max-width: 1250px;
+      margin: auto;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .bottom-details .bottom_text span,
+    .bottom-details .bottom_text a {
+      font-size: 14px;
+      font-weight: 300;
+      color: #fff;
+      opacity: 0.8;
+      text-decoration: none;
+    }
+
+    .bottom-details .bottom_text a:hover {
+      opacity: 1;
+      text-decoration: underline;
+    }
+
+    .bottom-details .bottom_text a {
+      margin-right: 10px;
+    }
+
+    .motivational-quote {
+      font-size: 1rem;
+      font-style: italic;
+      color: #fff;
+      opacity: 0.8;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    /* ------------------------------------------media-footer------------------------------------------- */
+    @media (max-width: 900px) {
+      .company-info {
+        width: 100%;
+        margin-right: 0rem;
+        margin-left: 1rem;
+      }
+
+      .company-info p {
+        margin-right: 2rem;
+        text-align: center;
+      }
+
+      .company-info span {
+        font-size: 1.7rem;
+        font-weight: bold;
+        text-align: center;
+      }
+
+      .team {
+        display: flex;
+        justify-content: center;
+      }
+
+      .team span {
+        font-size: 1.7rem;
+        font-weight: bold;
+      }
+
+      .company {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .img {
+        margin-left: 0rem;
+      }
+
+      footer .content .link-boxes {
+        flex-wrap: wrap;
+      }
+    }
+
+    @media (max-width: 700px) {
+      footer {
+        position: relative;
+      }
+
+      .content .top .logo-details {
+        font-size: 26px;
+      }
+
+      .content .top .media-icons a {
+        height: 35px;
+        width: 35px;
+        font-size: 14px;
+        line-height: 35px;
+      }
+
+      footer .content .link-boxes .box {
+        width: calc(100% / 3 - 10px);
+      }
+
+      .bottom-details .bottom_text span,
+      .bottom-details .bottom_text a {
+        font-size: 12px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      footer .content .top {
+        flex-direction: column;
+      }
+
+      .content .top .media-icons {
+        margin-top: 16px;
+      }
+
+      footer .content .link-boxes .box {
+        width: calc(100% / 2 - 10px);
+      }
+    }
+
+    @media (max-width: 320px) {
+      .company-info p {
+        margin-right: 0rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- -----------------------------------------------company---------------------------------------------------------------- -->
+  <div class="company">
+    <div class="img">
+      <img src="https://raw.githubusercontent.com/pico-india/main-django/main/static/about-team.jpg" alt="" />
+    </div>
+    <div class="company-info">
+      <span>College <span class="our">Issue Reporting System</span></span>
+      <p>
+        <b>Welcome to the College Issue Reporting System</b>, a platform designed to streamline the process of reporting and resolving issues within our college. Whether it's infrastructure problems, academic concerns, or general feedback, our system ensures that your voice is heard. Our team is committed to creating a seamless experience for students and staff to collaborate and improve our college environment.
+      </p>
+    </div>
+  </div>
+  <!-- ---------------------------------------------------------------------------------------------------------------------- -->
+  <!-- ----------------------------------------------------team-------------------------------------------------------------- -->
+  <div class="team"><span>OUR TEAM</span></div>
+  <div class="container">
+    <div class="card">
+      <div class="card-image loading"><img src="../static/images/sheik_pic.jpeg" alt="sheik photo" /></div>
+      <div class="card-info">
+        <h3 class="card-title loading"><span class="yellow-surname">Sheik Mohammed Ali M</span></h3>
+        <p class="card-description loading">
+          <span class="personal-info">
+            <span class="info">Student</span> <br>
+            Pursuing CSE Engineering (ACE Hosur) <br>
+            Email: <a href="mailto:mdali.sheik1613@gmail.com">mdali.sheik1613@gmail.com</a>
+          </span>
+        </p>
+        <div class="card-mediaIcons">
+          <a href="https://www.linkedin.com/in/sheikmdali/" class="loading" target="on_blank"><i class="fab fa-linkedin-in"></i></a>
+          <a href="https://github.com/sheik-md-ali/" class="loading" target="_blank"><i class="fab fa-github"></i></a>
+          <a href="https://www.instagram.com/1.shaikh_official/" class="loading" target="on_blank"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-image loading"><img src="https://imgs.search.brave.com/CEJPCXdzbyuMAE3qN1TRaZZ3WcF05RuK6GoeXTr26uE/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/ZnJlZS1waG90by9i/ZWF1dGlmdWwtZ2ly/bC13aXRoLWxhcHRv/cC1jb2ZmZWUtY3Vw/LTNkLXJlbmRlcmlu/Z18xMDU3LTQ0ODc0/LmpwZz9zZW10PWFp/c19oeWJyaWQ" alt="sample photo" /></div>
+      <div class="card-info">
+        <h3 class="card-title loading"><span class="yellow-surname">Nameetha</span></h3>
+        <p class="card-description loading">
+          <span class="personal-info">
+            <span class="info">Student</span> <br>
+            Pursuing CSE Engineering (Mahendra clg) <br>
+            place: Coimbatore</a>
+          </span>
+        </p>
+        <div class="card-mediaIcons">
+          <a href="https://www.linkedin.com/in/nameetha-nagesh" class="loading" target="on_blank"><i class="fab fa-linkedin-in"></i></a>
+          <a href="https://www.linkedin.com/in/nameetha-nagesh-4aa840336/" class="loading" target="_blank"><i class="fab fa-github"></i></a>
+          <a href="#" class="loading" target="on_blank"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ----------------------------------------footer------------------------------------------ -->
+  <footer>
+    <div class="content">
+      <div class="top">
+        <div class="logo-details">
+          <a href="https://github.com/sheik-md-ali" target="_blank" style="text-decoration: none; color: inherit;">
+            <i class="fab fa-github" style="font-size: 2rem;"></i>
+          </a>
+        </div>
+      </div>
+      <div class="link-boxes">
+        <ul class="box">
+          <li class="link_name">Quick Links</li>
+          <li><a href="{{ url_for('main.index') }} ">Home</a></li>
+        </ul>
+      </div>
+      <div class="motivational-quote">
+        <p>"The only way to do great work is to love what you do." – Steve Jobs</p>
+      </div>
+    </div>
+    <div class="bottom-details">
+      <div class="bottom_text">
+        <span class="copyright_text">Copyright © 2024 <a href="https://github.com/your-repo-link" target="_blank">College Issue Reporting System</a></span>
+      </div>
+    </div>
+  </footer>
+  <!-- ---------------------------------------------------------------------------------------- -->
+  <script>
+    const cardImages = document.querySelectorAll(".card-image");
+    const cardTitles = document.querySelectorAll(".card-title");
+    const cardDescriptions = document.querySelectorAll(".card-description");
+    const cardMediaIcons = document.querySelectorAll(".card-mediaIcons a");
+    const cardImgs = document.querySelectorAll(".card-image img");
+    const cardTitleSpans = document.querySelectorAll(".card-title span");
+    const cardDescSpans = document.querySelectorAll(".card-description span");
+    const mediaIcons = document.querySelectorAll(".card-mediaIcons a i");
+
+    const renderCard = () => {
+      //Remove the skeleton loading effect
+      cardImages.forEach((cardImage) => {
+        cardImage.classList.remove("loading");
+      });
+      cardTitles.forEach((cardTitle) => {
+        cardTitle.classList.remove("loading");
+      });
+      cardDescriptions.forEach((cardDescription) => {
+        cardDescription.classList.remove("loading");
+      });
+      cardMediaIcons.forEach((cardMediaIcon) => {
+        cardMediaIcon.classList.remove("loading");
+      });
+
+      //Show the hidden html elements
+      cardImgs.forEach((cardImg) => {
+        cardImg.style.visibility = "visible";
+      });
+      cardTitleSpans.forEach((cardTitleSpan) => {
+        cardTitleSpan.style.visibility = "visible";
+      });
+      cardDescSpans.forEach((cardDescSpan) => {
+        cardDescSpan.style.visibility = "visible";
+      });
+      mediaIcons.forEach((mediaIcon) => {
+        mediaIcon.style.visibility = "visible";
+      });
+    }
+
+    //Execute renderCard on setTimeout
+    setTimeout(() => {
+      renderCard();
+    }, 1000);
+  </script>
+</body>
+</html>

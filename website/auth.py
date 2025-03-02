@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from flask_login import login_user, logout_user, login_required
 from .models import User
 from . import db
@@ -28,10 +28,11 @@ def login():
     return render_template('login.html')
 
 
-@auth.route('/logout')
+@auth.route('/logout', methods=['POST'])
 @login_required
 def logout():
-    print("User logged out")
+    session.pop('role', None)
     logout_user()
+    session.clear()
     flash("You have been logged out.", "info")
     return redirect(url_for('auth.login'))

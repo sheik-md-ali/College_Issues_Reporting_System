@@ -3,293 +3,236 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fixer Dashboard & Management</title>
+    <title>Fixer Dashboard - College Issue Reporting</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f9;
+            background: #eef2f7;
+            color: #333;
         }
-
-        header {
-            background-color: #4CAF50;
-            color: white;
+        .navbar {
+            background: #1e3a8a;
             padding: 15px;
-            text-align: center;
-        }
-
-        nav ul {
-            list-style-type: none;
-            padding: 0;
-            text-align: center;
-        }
-
-        nav ul li {
-            display: inline;
-            margin-right: 20px;
-        }
-
-        nav ul li a {
             color: white;
-            text-decoration: none;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: auto;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0px 0px 10px #ccc;
-            margin-top: 20px;
-        }
-
-        h2 {
             text-align: center;
-        }
-
-        .fixer-list {
-            list-style: none;
-            padding: 0;
-        }
-
-        .fixer-item {
-            background: #fff;
-            margin: 10px 0;
-            padding: 15px;
-            border-radius: 5px;
+            font-size: 22px;
+            font-weight: bold;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
-            border: 1px solid #ddd;
         }
-
-        .remove-btn {
-            background-color: red;
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background: #25304d;
             color: white;
-            border: none;
-            padding: 8px 12px;
-            cursor: pointer;
-            border-radius: 4px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
         }
-
-        .remove-btn:hover {
-            background-color: darkred;
+        .sidebar a {
+            display: block;
+            color: white;
+            padding: 12px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-size: 18px;
         }
-
+        .sidebar a:hover {
+            background: #ff9800;
+        }
+        .sidebar i {
+            margin-right: 10px;
+        }
+        .container {
+            margin-left: 270px;
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            min-height: 100vh;
+        }
+        .profile-card {
+            text-align: center;
+            padding: 20px;
+            background: #34495e;
+            color: white;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .profile-card img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+            border: 3px solid #ff9800;
+        }
+        .profile-card h5 {
+            margin: 10px 0 5px;
+            font-size: 18px;
+        }
+        .profile-card p {
+            margin: 0;
+            font-size: 14px;
+            color: #bdc3c7;
+        }
+        .table-container {
+            overflow-x: auto;
+            width: 100%;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
         }
-
-        table, th, td {
-            border: 1px solid #ddd;
-        }
-
         th, td {
-            padding: 10px;
+            border: 1px solid #ddd;
+            padding: 15px;
             text-align: left;
+            font-size: 16px;
         }
-
         th {
-            background-color: #4CAF50;
+            background-color: #25304d;
             color: white;
         }
-
-        button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
-
-        /* Modal Styling */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-
-            background-color: rgba(0,0,0,0.4);
-            padding-top: 60px;
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-        }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
+        .resolved {
+            color: green;
             font-weight: bold;
         }
-
-        .close:hover {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
+        .pending {
+            color: red;
+            font-weight: bold;
+        }
+        .table-icons {
+            font-size: 18px;
+            margin-right: 8px;
+        }
+        .table-icons.green {
+            color: green;
+        }
+        .table-icons.red {
+            color: red;
+        }
+        .table-icons.blue {
+            color: #1e3a8a;
+        }
+        .table-icons.orange {
+            color: #ff9800;
         }
 
-
-
-        .progress-update-form label {
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .progress-update-form input, .progress-update-form select, .progress-update-form textarea {
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0;
-            border: 1px solid #ddd;
-        }
-
-        .progress-update-form button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            cursor: pointer;
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .navbar {
+                font-size: 18px;
+                padding: 10px;
+            }
+            .container {
+                margin-left: 0;
+                padding: 15px;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 10px;
+                box-shadow: none;
+            }
+            .sidebar a {
+                padding: 10px;
+                font-size: 16px;
+            }
+            th, td {
+                padding: 10px;
+                font-size: 14px;
+            }
         }
     </style>
 </head>
 <body>
 
-<header>
-    <h1>Fixer Dashboard</h1>
-    <nav>
-        <ul>
-            <li><a href="#">Dashboard</a></li>
-            <li><a href="#">Assigned Issues</a></li>
-            <li><a href="#">Profile</a></li>
-            <li><a href="#">Logout</a></li>
-        </ul>
-    </nav>
-</header>
+    <!-- Navbar -->
+    <div class="navbar">
+        Fixer Dashboard - College Issue Reporting System
+    </div>
 
-<!-- Fixer Management Section -->
-<div class="container">
-    <h2>Fixer Management</h2>
-    <ul class="fixer-list" id="fixerList">
-        <li class="fixer-item">
-            <span>John Doe (Electrician)</span>
-            <button class="remove-btn" onclick="removeFixer(this)">Remove</button>
-        </li>
-        <li class="fixer-item">
-            <span>Jane Smith (Plumber)</span>
-            <button class="remove-btn" onclick="removeFixer(this)">Remove</button>
-        </li>
-    </ul>
-</div>
-
-<!-- Assigned Issues Section -->
-<div class="container">
-    <h2>Assigned Issues</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Issue ID</th>
-                <th>Description</th>
-                <th>Severity</th>
-                <th>Location</th>
-                <th>Status</th>
-                <th>Update Progress</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>#001</td>
-                <td>Broken Light in Classroom 101</td>
-                <td>High</td>
-                <td>Classroom 101</td>
-                <td>In Progress</td>
-                <td><button onclick="openModal('#001')">Update Status</button></td>
-            </tr>
-            <tr>
-                <td>#002</td>
-                <td>Leaking Pipe in Hostel Block B</td>
-                <td>Medium</td>
-                <td>Hostel Block B</td>
-                <td>Pending</td>
-                <td><button onclick="openModal('#002')">Update Status</button></td>
-            </tr>
-
-        </tbody>
-    </table>
-</div>
-
-<!-- Modal for Update Progress -->
-<div id="progress-modal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <h2>Update Issue Progress</h2>
-        <form class="progress-update-form" id="progressForm">
-            <label for="status">New Status:</label>
-            <select id="status" name="status">
-                <option value="In Progress">In Progress</option>
-                <option value="Resolved">Resolved</option>
-            </select>
-
-
-            
-
-            <label for="progress">Progress Update:</label>
-            <textarea id="progress" name="progress" rows="4" placeholder="Describe the work done so far..."></textarea>
-
-            <label for="media">Attach Media (optional):</label>
-            <input type="file" id="media" name="media">
-
-            <button type="submit">Submit Progress</button>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="profile-card">
+            <img src="https://imgs.search.brave.com/MVaPCcHt0lfERKn26iZ8jdagC-Z0JUJLoHUakpjd9is/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly90NC5m/dGNkbi5uZXQvanBn/LzAwLzY1Lzc3LzIx/LzM2MF9GXzY1Nzcy/MTkyX2ptOE1ZTDM5/QnA1cHA5MEtseUdX/clJnRXJZYTcwbFpa/LmpwZw" alt="Fixer Icon">
+            <h5>{{ current_user.name }}</h5>
+            <p>{{ current_user.email }}</p>
+        </div>
+        <a href="#assigned-issues"><i class="fas fa-tasks"></i> Assigned Issues</a>
+        <form action="{{ url_for('auth.logout') }}" method="post">
+            <button type="submit" style="color: rgb(255, 255, 255)(221, 190, 190); padding: 10px 20px; font-size: 16px;background-color: rgb(255, 0, 0);">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
         </form>
     </div>
-</div>
 
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Assigned Issues Section -->
+        <section id="assigned-issues">
+            <h2 class="mb-4">Assigned Issues</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Image</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for issue in issues %}
+                        <tr>
+                            <td><i class="fas fa-hashtag table-icons blue"></i>{{ issue.id }}</td>
+                            <td><i class="fas fa-tag table-icons orange"></i>{{ issue.issue_type }}</td>
+                            <td><i class="fas fa-align-left table-icons blue"></i>{{ issue.description }}</td>
+                            <td>
+                                {% if issue.media_filename %}
+                                    <img src="{{ url_for('main.uploaded_file', filename=issue.media_filename) }}" 
+                                         alt="Issue Image" 
+                                         style="width: 100px; height: auto;">
+                                {% else %}
+                                    <p>No Image Available</p>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if issue.status == 'Resolved' %}
+                                    <span class="resolved"><i class="fas fa-check-circle table-icons green"></i> Resolved</span>
+                                {% else %}
+                                    <span class="pending"><i class="fas fa-exclamation-circle table-icons red"></i> Pending</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <form method="POST" action="{{ url_for('main.fixer_dashboard') }}" style="display: inline;">
+                                    <input type="hidden" name="issue_id" value="{{ issue.id }}">
+                                    <select name="status" class="form-control" onchange="this.form.submit()">
+                                        <option value="Pending" {% if issue.status == 'Pending' %}selected{% endif %}>Pending</option>
+                                        <option value="Resolved" {% if issue.status == 'Resolved' %}selected{% endif %}>Resolved</option>
+                                    </select>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
 
-
-<script>
-    function removeFixer(button) {
-        let fixerItem = button.parentElement;
-        fixerItem.remove();
-        alert("Fixer removed successfully!");
-    }
-
-    function openModal(issueId) {
-        document.getElementById("progress-modal").style.display = "block";
-
-    }
-
-    function closeModal() {
-        document.getElementById("progress-modal").style.display = "none";
-    }
-
-
-    window.onclick = function(event) {
-        if (event.target == document.getElementById("progress-modal")) {
-            closeModal();
-        }
-    }
-    document.getElementById("progressForm").addEventListener("submit", function(event) {
-        event.preventDefault();
-        alert("Progress updated successfully!");
-        closeModal();
-    });
-</script>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

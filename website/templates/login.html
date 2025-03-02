@@ -1,100 +1,283 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>College Issue Management System - Login</title>
-  <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-    .login-container {
-      background: #fff;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      max-width: 400px;
-    }
-    .login-container h2 {
-      text-align: center;
-      margin-bottom: 20px;
-      color: #333;
-    }
-    .form-group {
-      margin-bottom: 15px;
-    }
-    .form-group label {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 5px;
-      color: #555;
-    }
-    .form-group input {
-      width: 100%;
-      padding: 10px;
-      font-size: 16px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      outline: none;
-      transition: border-color 0.3s;
-    }
-    .form-group input:focus {
-      border-color: #4a90e2;
-    }
-    .btn {
-      width: 100%;
-      padding: 12px;
-      font-size: 16px;
-      color: #fff;
-      background: #4a90e2;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    .btn:hover {
-      background: #357ab7;
-    }
-    .footer-text {
-      text-align: center;
-      margin-top: 20px;
-      color: #666;
-    }
-    .footer-text a {
-      color: #4a90e2;
-      text-decoration: none;
-    }
-    .footer-text a:hover {
-      text-decoration: underline;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Reporting System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            height: 100vh;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1a1a1a, #2c3e50);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Particle Background */
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            z-index: 1;
+        }
+
+        .container {
+            display: flex;
+            width: 90%;
+            max-width: 1000px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: slideIn 1.5s ease-in-out;
+            z-index: 2;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .left-section {
+            flex: 1;
+            background: linear-gradient(135deg, #ff7e5f, #feb47b);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .left-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.2), transparent);
+            animation: rotate 10s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .left-section h1 {
+            font-size: 36px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            animation: popIn 1s ease-in-out;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            60% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .left-section p {
+            font-size: 18px;
+            opacity: 0.9;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .right-section {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            animation: fadeInRight 1s ease-in-out;
+        }
+
+        @keyframes fadeInRight {
+            from { transform: translateX(50px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .right-section h2 {
+            margin-bottom: 20px;
+            color: #fff;
+            font-size: 28px;
+            font-weight: 600;
+            animation: popIn 1s ease-in-out;
+        }
+
+        .input-box {
+            width: 100%;
+            margin-bottom: 20px;
+            animation: fadeInUp 1s ease-in-out;
+        }
+
+        @keyframes fadeInUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .input-box input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            transition: border-color 0.3s ease, background 0.3s ease;
+        }
+
+        .input-box input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .input-box input:focus {
+            border-color: #ff7e5f;
+            background: rgba(255, 255, 255, 0.2);
+            outline: none;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #ff7e5f, #feb47b);
+            border: none;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            animation: fadeInUp 1s ease-in-out;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 126, 95, 0.4);
+        }
+
+        .about-link {
+            margin-top: 20px;
+            font-size: 14px;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .about-link a {
+            color: #ff7e5f;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .about-link a:hover {
+            color: #e76d50;
+            text-decoration: underline;
+        }
+
+        /* Error Message */
+        .error-message {
+            color: #ff4d4d;
+            font-size: 14px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        /* Footer */
+        .footer {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            z-index: 2;
+        }
+
+        .footer a {
+            color: #ff7e5f;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: #e76d50;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            .left-section {
+                padding: 30px;
+            }
+            .right-section {
+                padding: 30px;
+            }
+        }
+    </style>
+    <!-- Particles.js Library -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 </head>
 <body>
+    <!-- Particle Background -->
+    <div id="particles-js"></div>
 
-<div class="login-container">
-  <h2>College Issue Management System</h2>
-  <form action="{{ url_for('auth.login') }}" method="POST">
-    <div class="form-group">
-      <label for="email">Email Address</label>
-      <input type="email" id="email" name="email" placeholder="Enter your email" required>
-    </div>
-    <div class="form-group">
-      <label for="password">Password</label>
-      <input type="password" id="password" name="password" placeholder="Enter your password" required>
-    </div>
-    <button type="submit" class="btn">Login</button>
-  </form>
-  <div class="footer-text">
-    <p>Forgot your password? <a href="#">Reset it here</a></p>
-  </div>
-</div>
+    <div class="container">
+        <div class="left-section">
+            <h1>Welcome to the College Reporting System</h1>
+            <p>Manage and track reports efficiently with our system.</p>
+        </div>
+        <div class="right-section">
+            <h2>Login</h2>
+            <form action="{{ url_for('auth.login') }}" method="POST">
 
+                <div class="input-box">
+                  <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                </div>
+                <div class="input-box">
+                  <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="login-btn">Login</button>
+                <div class="error-message" id="errorMessage">Invalid email or password. Please try again.</div>
+            </form>
+            <div class="about-link">
+              <a href="{{ url_for('main.about') }}">About Us</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        &copy; 2023 College Reporting System | <a href="#">Privacy Policy</a>
+    </div>
+
+    <!-- Particles.js Configuration -->
+    <script>
+        particlesJS.load('particles-js', 'particles.json', function() {
+            console.log('Particles.js loaded!');
+        });
+
+       
+    </script>
 </body>
 </html>

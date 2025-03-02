@@ -4,6 +4,8 @@ from website.models import User
 
 app = create_app()  # If using an app factory
 
+#this is for the sample data
+
 with app.app_context():
     users_data = [
         {"name": "Admin User", "email": "admin@example.com", "password": "admin123", "role": "admin"},
@@ -31,3 +33,4 @@ with app.app_context():
 
     db.session.commit()
     print("User creation/update process completed.")
+

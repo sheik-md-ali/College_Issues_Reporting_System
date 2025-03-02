@@ -59,7 +59,11 @@
         <a href="#report"><i class="fas fa-exclamation-circle"></i> Report Issue</a>
         <a href="#track"><i class="fas fa-tasks"></i> Track Issues</a>
         <a href="#feedback"><i class="fas fa-comments"></i> Feedback</a>
-        <a href="{{ url_for('auth.logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        <form action="{{ url_for('auth.logout') }}" method="post">
+            <button type="submit" style="color: rgb(255, 255, 255)(221, 190, 190); padding: 10px 20px; font-size: 16px;background-color: rgb(255, 0, 0);">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </form>
 
     </div>
 

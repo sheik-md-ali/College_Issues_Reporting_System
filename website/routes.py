@@ -13,10 +13,15 @@ main = Blueprint('main', __name__)
 def index():
     return render_template('login.html')
 
+@main.route("/about")
+def about():
+    return render_template("about.html")
+
 @main.route('/admin-dashboard')
 def admin_dashboard():
     issues = Issue.query.all()
     fixers = User.query.filter_by(role='fixer').all()
+    feedbacks = Feedback.query.all()  # Fetch all feedback entries
     total_issues = Issue.query.count()
     resolved_issues = Issue.query.filter_by(status='Resolved').count()
     pending_issues = total_issues - resolved_issues
@@ -24,6 +29,7 @@ def admin_dashboard():
     return render_template('admin.html', 
                            issues=issues, 
                            fixers=fixers,
+                           feedbacks=feedbacks,  # Pass feedbacks to the template
                            total_issues=total_issues, 
                            resolved_issues=resolved_issues, 
                            pending_issues=pending_issues)
@@ -88,12 +94,35 @@ def add_fixer():
     return redirect(url_for('main.admin_dashboard'))
 
 
-@main.route('/fixer-dashboard')
+
+@main.route('/fixer-dashboard', methods=['GET', 'POST'])
 @login_required
 def fixer_dashboard():
+    # Ensure only fixers can access this route
     if current_user.role != 'fixer':
         return "Access Denied", 403
-    return render_template('fixer.html')
+
+    # Fetch issues assigned to the logged-in fixer
+    fixer_id = current_user.id
+    issues = Issue.query.filter_by(fixer_assigned=fixer_id).all()
+
+    # Handle status update
+    if request.method == 'POST':
+        issue_id = request.form.get('issue_id')
+        new_status = request.form.get('status')
+        
+        # Update the issue status
+        issue = Issue.query.get(issue_id)
+        if issue and issue.fixer_assigned == fixer_id:  # Ensure the issue belongs to the fixer
+            issue.status = new_status
+            db.session.commit()
+            flash('Issue status updated successfully!', 'success')
+        else:
+            flash('Invalid request or issue not found.', 'error')
+
+        return redirect(url_for('main.fixer_dashboard'))
+
+    return render_template('fixer.html', issues=issues)
 
 
 @main.route('/student-dashboard')
